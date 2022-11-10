@@ -19,7 +19,29 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
+import Database from '@ioc:Adonis/Lucid/Database'
+import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-Route.get('/', async () => {
-  return { hello: 'world!!' }
+// TEST ROUTES
+Route.group(() => {
+  Route.get('test_db_connection', async ({ response }: HttpContextContract) => {
+    await Database.report().then(({ health }) => {
+      const { healthy, message } = health
+      if (healthy) return response.ok({ message })
+    })
+  })
+
+  Route.get('/', async () => {
+    return { hello: 'world!!' }
+  })
 })
+
+// PUBLIC ROUTES
+Route.group(() => {
+  Route.post('login', '')
+  Route.post('user/', '')
+})
+
+// PLAYER ROUTES
+
+//ADMIN ROUTES
