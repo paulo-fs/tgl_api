@@ -12,9 +12,6 @@ export default class Cart extends BaseModel {
   public idUser: string
 
   @column()
-  public idGame: number
-
-  @column()
   public selectedNumbers: string
 
   @column()

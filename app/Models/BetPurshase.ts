@@ -1,7 +1,18 @@
 import { DateTime } from 'luxon'
-import { BaseModel, beforeCreate, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import { v4 as uuidv4 } from 'uuid'
+
+import {
+  BaseModel,
+  beforeCreate,
+  BelongsTo,
+  belongsTo,
+  column,
+  ManyToMany,
+  manyToMany,
+} from '@ioc:Adonis/Lucid/Orm'
+
 import User from './User'
+import Game from './Game'
 
 export default class BetPurshase extends BaseModel {
   @column({ isPrimary: true })
@@ -9,9 +20,6 @@ export default class BetPurshase extends BaseModel {
 
   @column()
   public idUser: string
-
-  @column()
-  public idGame: number
 
   @column()
   public selectedNumbers: string
@@ -27,6 +35,14 @@ export default class BetPurshase extends BaseModel {
 
   @belongsTo(() => User)
   public user: BelongsTo<typeof User>
+
+  @manyToMany(() => Game, {
+    localKey: 'id',
+    pivotForeignKey: 'id_bet_purshase',
+    relatedKey: 'id',
+    pivotRelatedForeignKey: 'id_game',
+  })
+  public game: ManyToMany<typeof Game>
 
   @beforeCreate()
   public static assignUuid(user: BetPurshase) {

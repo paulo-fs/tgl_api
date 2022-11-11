@@ -3,9 +3,15 @@ import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 export default class extends BaseSchema {
   protected tableName = 'games'
 
-  public async up () {
+  public async up() {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id')
+      table.increments('id').unique().unsigned().notNullable()
+      table.string('type', 50).notNullable()
+      table.text('description').notNullable()
+      table.integer('range').unsigned().notNullable()
+      table.decimal('price', 8, 2).defaultTo(0).unsigned().notNullable()
+      table.integer('min_max_numbers').unsigned().notNullable()
+      table.string('color', 7).notNullable()
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
@@ -15,7 +21,7 @@ export default class extends BaseSchema {
     })
   }
 
-  public async down () {
+  public async down() {
     this.schema.dropTable(this.tableName)
   }
 }
