@@ -5,10 +5,23 @@ export default class extends BaseSchema {
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id').primary()
-      table.integer('id_bet_purshase').unsigned().references('bet_purshases.id')
-      table.uuid('id_game').references('games.id')
-      table.unique(['id_bet_purshase', 'id_game'])
+      table.increments('id').unique().unsigned()
+
+      table
+        .integer('id_bet_purshase')
+        .references('id')
+        .inTable('bet_purshases')
+        .unsigned()
+        .notNullable()
+        .onDelete('CASCADE')
+
+      table
+        .integer('id_game')
+        .references('id')
+        .inTable('games')
+        .unsigned()
+        .notNullable()
+        .onDelete('CASCADE')
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
