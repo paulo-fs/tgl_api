@@ -39,8 +39,8 @@ Route.group(() => {
 // PUBLIC ROUTES
 Route.group(() => {
   Route.post('login', '')
-  Route.post('user/', '')
-})
+  Route.post('users/', 'UsersController.store')
+}).prefix('api')
 
 // PLAYER ROUTES
 

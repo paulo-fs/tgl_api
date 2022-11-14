@@ -9,18 +9,20 @@ export default class extends BaseSchema {
 
       table
         .integer('id_bet_purshase')
-        .references('id')
-        .inTable('bet_purshases')
+        .unique()
         .unsigned()
         .notNullable()
+        .references('id')
+        .inTable('bet_purshases')
         .onDelete('CASCADE')
 
       table
         .integer('id_game')
-        .references('id')
-        .inTable('games')
+        .unique()
         .unsigned()
         .notNullable()
+        .references('id')
+        .inTable('games')
         .onDelete('CASCADE')
 
       /**

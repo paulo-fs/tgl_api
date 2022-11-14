@@ -24,10 +24,7 @@ export default class Cart extends BaseModel {
   public updatedAt: DateTime
 
   @manyToMany(() => Game, {
-    localKey: 'id',
-    pivotForeignKey: 'id_cart',
-    relatedKey: 'id',
-    pivotRelatedForeignKey: 'id_game',
+    pivotTable: 'cart_games',
   })
   public game: ManyToMany<typeof Game>
 }

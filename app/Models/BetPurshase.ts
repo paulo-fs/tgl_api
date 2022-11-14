@@ -36,12 +36,7 @@ export default class BetPurshase extends BaseModel {
   @belongsTo(() => User)
   public user: BelongsTo<typeof User>
 
-  @manyToMany(() => Game, {
-    localKey: 'id',
-    pivotForeignKey: 'id_bet_purshase',
-    relatedKey: 'id',
-    pivotRelatedForeignKey: 'id_game',
-  })
+  @manyToMany(() => Game)
   public game: ManyToMany<typeof Game>
 
   @beforeCreate()
