@@ -1,29 +1,27 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class extends BaseSchema {
-  protected tableName = 'bet_purshase_games'
+  protected tableName = 'bets'
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id').unique().unsigned()
-
+      table.uuid('id').unique().notNullable().primary()
       table
-        .integer('id_bet_purshase')
+        .uuid('user_id')
         .unique()
-        .unsigned()
         .notNullable()
         .references('id')
-        .inTable('bet_purshases')
+        .inTable('users')
         .onDelete('CASCADE')
-
       table
-        .integer('id_game')
+        .integer('game_id')
         .unique()
-        .unsigned()
         .notNullable()
+        .unsigned()
         .references('id')
         .inTable('games')
         .onDelete('CASCADE')
+      table.text('selected_numbers').notNullable()
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL

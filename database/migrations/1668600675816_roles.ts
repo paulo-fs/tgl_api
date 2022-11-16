@@ -1,12 +1,12 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class extends BaseSchema {
-  protected tableName = 'bet_rules'
+  protected tableName = 'roles'
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id').primary().unsigned().unique()
-      table.integer('min_cart_value').unsigned().notNullable()
+      table.increments('id').notNullable().unique().primary()
+      table.string('role', 50).notNullable()
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
