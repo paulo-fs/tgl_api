@@ -22,7 +22,5 @@ export default class StoreValidator extends CustomMessages {
     ]),
 
     password: schema.string({ trim: true }, [rules.maxLength(50), rules.minLength(5)]),
-
-    isAdmin: schema.boolean.optional(),
   })
 }

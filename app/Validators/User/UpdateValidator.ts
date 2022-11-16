@@ -31,7 +31,5 @@ export default class UpdateValidator extends CustomMessages {
     ]),
 
     password: schema.string.optional({ trim: true }, [rules.maxLength(50), rules.minLength(5)]),
-
-    isAdmin: schema.boolean.optional(),
   })
 }
