@@ -1,9 +1,11 @@
 import { DateTime } from 'luxon'
 import { v4 } from 'uuid'
-// import Hash from '@ioc:Adonis/Core/Hash'
+import Hash from '@ioc:Adonis/Core/Hash'
+
 import {
   BaseModel,
   beforeCreate,
+  beforeSave,
   column,
   HasMany,
   hasMany,
@@ -46,10 +48,10 @@ export default class User extends BaseModel {
     user.id = v4()
   }
 
-  // @beforeCreate()
-  // public static async hashPassword(user: User) {
-  //   if (user.$dirty.password) {
-  //     user.password = await Hash.make(user.password)
-  //   }
-  // }
+  @beforeSave()
+  public static async hashPassword(user: User) {
+    if (user.$dirty.password) {
+      user.password = await Hash.make(user.password)
+    }
+  }
 }
