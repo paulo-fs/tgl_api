@@ -1,12 +1,18 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
 
-export default class BetRule extends BaseModel {
+export default class AppConfiguration extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
   @column()
-  public min_cart_value: number
+  public rule: string
+
+  @column()
+  public value: string
+
+  @column()
+  public dataType: string
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

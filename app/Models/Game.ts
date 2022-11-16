@@ -1,8 +1,6 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
-
-import Cart from './Cart'
-import BetPurshase from './BetPurshase'
+import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import Bet from './Bet'
 
 export default class Game extends BaseModel {
   @column({ isPrimary: true })
@@ -21,7 +19,7 @@ export default class Game extends BaseModel {
   public price: number
 
   @column()
-  public min_max_numbers: number
+  public minMaxNumbers: number
 
   @column()
   public color: string
@@ -32,11 +30,6 @@ export default class Game extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
-  @manyToMany(() => Cart, {
-    pivotTable: 'cart_games',
-  })
-  public cart: ManyToMany<typeof Cart>
-
-  @manyToMany(() => BetPurshase)
-  public betPurshase: ManyToMany<typeof BetPurshase>
+  @belongsTo(() => Bet)
+  public bets: BelongsTo<typeof Bet>
 }

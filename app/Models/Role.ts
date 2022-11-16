@@ -1,21 +1,13 @@
 import { DateTime } from 'luxon'
-
 import { BaseModel, column, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
+import User from './User'
 
-import Game from './Game'
-
-export default class Cart extends BaseModel {
+export default class Role extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
   @column()
-  public idUser: string
-
-  @column()
-  public selectedNumbers: string
-
-  @column()
-  public price: number
+  public role: string
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
@@ -23,8 +15,8 @@ export default class Cart extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
-  @manyToMany(() => Game, {
-    pivotTable: 'cart_games',
+  @manyToMany(() => User, {
+    pivotTable: 'user_roles',
   })
-  public game: ManyToMany<typeof Game>
+  public users: ManyToMany<typeof User>
 }

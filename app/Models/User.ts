@@ -1,21 +1,7 @@
 import { DateTime } from 'luxon'
-import { v4 as uuidv4 } from 'uuid'
-import Hash from '@ioc:Adonis/Core/Hash'
-
-import {
-  BaseModel,
-  beforeCreate,
-  beforeSave,
-  column,
-  HasMany,
-  hasMany,
-  HasOne,
-  hasOne,
-} from '@ioc:Adonis/Lucid/Orm'
-
-import BetPurshase from './BetPurshase'
-import Cart from './Cart'
-import Token from './Token'
+import { BaseModel, column, HasMany, hasMany, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
+import Bet from './Bet'
+import Role from './Role'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -25,16 +11,10 @@ export default class User extends BaseModel {
   public name: string
 
   @column()
-  public email: string
-
-  @column({ serializeAs: null })
   public password: string
 
   @column()
-  public isAdmin: boolean
-
-  @column({ serializeAs: null })
-  public rememberMeToken?: string
+  public roleId: number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
@@ -42,24 +22,11 @@ export default class User extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
-  @hasMany(() => BetPurshase)
-  public betPurchase: HasMany<typeof BetPurshase>
+  @hasMany(() => Bet)
+  public bets: HasMany<typeof Bet>
 
-  @hasOne(() => Cart)
-  public cart: HasOne<typeof Cart>
-
-  @hasOne(() => Token)
-  public token: HasOne<typeof Token>
-
-  @beforeCreate()
-  public static assignUuid(user: User) {
-    user.id = uuidv4()
-  }
-
-  @beforeSave()
-  public static async hashPassword(user: User) {
-    if (user.$dirty.password) {
-      user.password = await Hash.make(user.password)
-    }
-  }
+  @manyToMany(() => Role, {
+    pivotTable: 'user_roles',
+  })
+  public roles: ManyToMany<typeof Role>
 }
