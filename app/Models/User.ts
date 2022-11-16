@@ -1,5 +1,16 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, HasMany, hasMany, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
+import { v4 } from 'uuid'
+// import Hash from '@ioc:Adonis/Core/Hash'
+import {
+  BaseModel,
+  beforeCreate,
+  column,
+  HasMany,
+  hasMany,
+  ManyToMany,
+  manyToMany,
+} from '@ioc:Adonis/Lucid/Orm'
+
 import Bet from './Bet'
 import Role from './Role'
 
@@ -11,10 +22,10 @@ export default class User extends BaseModel {
   public name: string
 
   @column()
-  public password: string
+  public email: string
 
   @column()
-  public roleId: number
+  public password: string
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
@@ -29,4 +40,16 @@ export default class User extends BaseModel {
     pivotTable: 'user_roles',
   })
   public roles: ManyToMany<typeof Role>
+
+  @beforeCreate()
+  public static async assignUuid(user: User) {
+    user.id = v4()
+  }
+
+  // @beforeCreate()
+  // public static async hashPassword(user: User) {
+  //   if (user.$dirty.password) {
+  //     user.password = await Hash.make(user.password)
+  //   }
+  // }
 }
