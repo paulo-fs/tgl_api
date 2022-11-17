@@ -38,7 +38,7 @@ Route.group(() => {
 
 // PUBLIC ROUTES
 Route.group(() => {
-  Route.resource('users/', 'UsersController')
+  Route.post('users/create', 'UsersController.store')
   Route.post('login', 'AuthController.login')
 }).prefix('api')
 
