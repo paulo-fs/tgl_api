@@ -4,9 +4,21 @@ import Role from 'App/Models/Role'
 
 import User from 'App/Models/User'
 import StoreValidator from 'App/Validators/User/StoreValidator'
+import UpdateValidator from 'App/Validators/User/UpdateValidator'
 
 export default class UsersController {
-  public async index({}: HttpContextContract) {}
+  public async index({ request, response }: HttpContextContract) {
+    const { page, perPage, noPaginate } = request.qs()
+
+    if (noPaginate) return User.query()
+
+    try {
+      const users = await User.query().paginate(page || 1, perPage || 10)
+      return response.ok(users)
+    } catch (error) {
+      return response.badRequest({ message: 'Error in list users', originalError: error.message })
+    }
+  }
 
   public async store({ request, response }: HttpContextContract) {
     await request.validate(StoreValidator)
@@ -49,9 +61,48 @@ export default class UsersController {
     response.ok({ createdUser })
   }
 
-  public async show({}: HttpContextContract) {}
+  public async show({ params, response }: HttpContextContract) {
+    const userId = params.id
 
-  public async update({}: HttpContextContract) {}
+    try {
+      const user = await User.findByOrFail('id', userId)
+      user.load('roles')
+      return user
+    } catch (error) {
+      return response.notFound({ message: 'User not found', originalError: error.message })
+    }
+  }
 
-  public async destroy({}: HttpContextContract) {}
+  public async update({ request, response, params }: HttpContextContract) {
+    await request.validate(UpdateValidator)
+    const userId = params.id
+    const bodyRequest = request.only(['name', 'email', 'password'])
+
+    try {
+      const user = await User.findByOrFail('id', userId)
+      await user.merge(bodyRequest).save()
+      return user
+    } catch (error) {
+      return response.badRequest({ message: 'Error in update user', originalError: error.message })
+    }
+  }
+
+  public async destroy({ response, params }: HttpContextContract) {
+    const userId = params.id
+    let user: User
+
+    try {
+      user = await User.findByOrFail('id', userId)
+    } catch (error) {
+      return response.notFound({ message: 'User not found', originalError: error.message })
+    }
+
+    try {
+      await user.delete()
+    } catch (error) {
+      return response.badRequest({ message: 'Error in delete user', originalError: error.message })
+    }
+
+    return response.ok({ message: 'User deleted successfully' })
+  }
 }

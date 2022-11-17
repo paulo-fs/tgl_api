@@ -51,13 +51,20 @@ Route.group(() => {
   .prefix('api')
   .middleware(['auth', 'is:admin,employee'])
 
-// PLAYER ROUTES
+// CLIENT ROUTES
 
-//ADMIN ROUTES
+//ADMIN AND EMPLYOYEE ROUTES
 Route.group(() => {
-  Route.get('admin', ({ response }) => {
-    return response.ok({ message: 'You are authorized' })
-  })
+  Route.get('users', 'UsersController.index')
+  Route.get('users/:id', 'UsersController.show')
+  Route.put('users/:id', 'UsersController.update')
+})
+  .prefix('api')
+  .middleware(['auth', 'is:admin,employee'])
+
+// ADMIN ROUTES
+Route.group(() => {
+  Route.delete('users/:id', 'UsersController.destroy')
 })
   .prefix('api')
   .middleware(['auth', 'is:admin'])
