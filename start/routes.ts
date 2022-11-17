@@ -38,10 +38,26 @@ Route.group(() => {
 
 // PUBLIC ROUTES
 Route.group(() => {
-  Route.post('login', '')
-  Route.post('users/', 'UsersController.store')
+  Route.resource('users/', 'UsersController')
+  Route.post('login', 'AuthController.login')
 }).prefix('api')
+
+// AUTHENTICATED ROUTES
+Route.group(() => {
+  Route.get('test', ({ response }) => {
+    return response.ok({ message: 'You are authorized' })
+  })
+})
+  .prefix('api')
+  .middleware(['auth', 'is:admin,employee'])
 
 // PLAYER ROUTES
 
 //ADMIN ROUTES
+Route.group(() => {
+  Route.get('admin', ({ response }) => {
+    return response.ok({ message: 'You are authorized' })
+  })
+})
+  .prefix('api')
+  .middleware(['auth', 'is:admin'])
