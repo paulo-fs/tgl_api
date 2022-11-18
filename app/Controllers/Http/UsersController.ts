@@ -41,7 +41,6 @@ export default class UsersController {
 
     try {
       const roleClient = await Role.findByOrFail('role', 'client')
-      console.log('role', roleClient)
       await user.related('roles').attach([roleClient.id], trx)
     } catch (error) {
       trx.rollback()

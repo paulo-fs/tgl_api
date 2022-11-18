@@ -73,7 +73,14 @@ Route.group(() => {
 
 // ONLY ADMIN ROUTES
 Route.group(() => {
+  // USERS
   Route.delete('users/:id', 'UsersController.destroy')
+  // ROLES
+  Route.post('roles/create', 'RolesController.store')
+  Route.get('roles', 'RolesController.index')
+  Route.get('roles/:id', 'RolesController.show')
+  Route.put('roles/:id', 'RolesController.update')
+  Route.delete('roles/:id', 'RolesController.destroy')
 })
   .prefix('api')
   .middleware(['auth', 'is:admin'])
