@@ -55,8 +55,6 @@ Route.group(() => {
   Route.get('games/:id', 'GamesController.show')
 }).prefix('api')
 
-// AUTHENTICATED ROUTES
-
 //ADMIN AND EMPLYOYEE ROUTES
 Route.group(() => {
   // USERS
@@ -84,3 +82,11 @@ Route.group(() => {
 })
   .prefix('api')
   .middleware(['auth', 'is:admin'])
+
+// CLIENT ROUTES
+Route.group(() => {
+  Route.get('bets/:user_id', 'BetsController.index')
+  Route.post('bets/create', 'BetsController.store')
+})
+  .prefix('api')
+  .middleware(['auth', 'is:client'])
