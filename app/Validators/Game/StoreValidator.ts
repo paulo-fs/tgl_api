@@ -17,11 +17,11 @@ export default class StoreValidator extends CustomMessages {
 
     description: schema.string({ trim: true }, []),
 
-    range: schema.number([rules.unsigned(), rules.minLength(1), rules.maxLength(3)]),
+    range: schema.number([rules.unsigned()]),
 
     price: schema.number([rules.unsigned()]),
 
-    min_max_numbers: schema.number([rules.unsigned(), rules.minLength(1), rules.maxLength(3)]),
+    min_max_numbers: schema.number([rules.unsigned()]),
 
     color: schema.string({ trim: true }, [rules.minLength(4), rules.maxLength(7)]),
   })

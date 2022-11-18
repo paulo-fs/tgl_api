@@ -36,13 +36,7 @@ Route.group(() => {
   })
 })
 
-// PUBLIC ROUTES
-Route.group(() => {
-  Route.post('users/create', 'UsersController.store')
-  Route.post('login', 'AuthController.login')
-}).prefix('api')
-
-// AUTHENTICATED ROUTES
+// AUTHENTICATED TEST ROUTES
 Route.group(() => {
   Route.get('test', ({ response }) => {
     return response.ok({ message: 'You are authorized' })
@@ -51,18 +45,33 @@ Route.group(() => {
   .prefix('api')
   .middleware(['auth', 'is:admin,employee'])
 
-// CLIENT ROUTES
+// PUBLIC ROUTES
+Route.group(() => {
+  // USERS
+  Route.post('users/create', 'UsersController.store')
+  Route.post('login', 'AuthController.login')
+  // GAMES
+  Route.get('games', 'GamesController.index')
+  Route.get('games/:id', 'GamesController.show')
+}).prefix('api')
+
+// AUTHENTICATED ROUTES
 
 //ADMIN AND EMPLYOYEE ROUTES
 Route.group(() => {
+  // USERS
   Route.get('users', 'UsersController.index')
   Route.get('users/:id', 'UsersController.show')
   Route.put('users/:id', 'UsersController.update')
+  // GAMES
+  Route.post('games/create', 'GamesController.store')
+  Route.delete('games/:id', 'GamesController.destroy')
+  Route.put('games/:id', 'GamesController.update')
 })
   .prefix('api')
   .middleware(['auth', 'is:admin,employee'])
 
-// ADMIN ROUTES
+// ONLY ADMIN ROUTES
 Route.group(() => {
   Route.delete('users/:id', 'UsersController.destroy')
 })
