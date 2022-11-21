@@ -83,10 +83,11 @@ Route.group(() => {
   .prefix('api')
   .middleware(['auth', 'is:admin'])
 
-// CLIENT ROUTES
+// AUTHENTICATED ROUTES
 Route.group(() => {
-  Route.get('bets/:user_id', 'BetsController.index')
+  Route.get('bets', 'BetsController.index')
+  Route.get('bets/:id', 'BetsController.show')
   Route.post('bets/create', 'BetsController.store')
 })
   .prefix('api')
-  .middleware(['auth', 'is:client'])
+  .middleware(['auth'])
