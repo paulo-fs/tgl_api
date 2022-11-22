@@ -53,6 +53,7 @@
     "youch-terminal": "^2.1.5"
   },
   "dependencies": {
+    "@": "adonisjs/view",
     "@adonisjs/application": "^5.2.5",
     "@adonisjs/auth": "^8.2.3",
     "@adonisjs/core": "^5.8.0",

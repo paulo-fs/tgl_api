@@ -2,6 +2,14 @@
 # yarn lockfile v1
 
 
+"@@adonisjs/view":
+  version "6.2.0"
+  resolved "https://codeload.github.com/adonisjs/view/tar.gz/715815814384f811a3f86a217422508ccaf4d546"
+  dependencies:
+    edge-error "^2.0.8"
+    edge-supercharged "^3.1.1"
+    edge.js "^5.5.0"
+
 "@adonisjs/ace@^11.3.1":
   version "11.3.1"
   resolved "https://registry.yarnpkg.com/@adonisjs/ace/-/ace-11.3.1.tgz#6e551d8744583f71f0202587f64a6e7ee7ce7f25"
