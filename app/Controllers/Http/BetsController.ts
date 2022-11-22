@@ -10,13 +10,14 @@ import Database from '@ioc:Adonis/Lucid/Database'
 export default class BetsController {
   public async index({ auth, response, request }: HttpContextContract) {
     const userId = auth.user?.id
-    const { page, perPage, noPaginate } = request.qs()
+    const { page, perPage, noPaginate, ...inputs } = request.qs()
 
-    if (noPaginate) return await Bet.query().where('user_id', userId!)
+    if (noPaginate) return await Bet.query().where('user_id', userId!).filter(inputs)
 
     try {
       const bets = await Bet.query()
         .where('user_id', userId!)
+        .filter(inputs)
         .paginate(page || 1, perPage || 10)
       return bets
     } catch (error) {

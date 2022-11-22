@@ -13,7 +13,13 @@ import {
 import User from './User'
 import Game from './Game'
 
-export default class Bet extends BaseModel {
+import { compose } from '@ioc:Adonis/Core/Helpers'
+import { Filterable } from '@ioc:Adonis/Addons/LucidFilter'
+import BetFilter from './Filters/BetFilter'
+
+export default class Bet extends compose(BaseModel, Filterable) {
+  public static $filter = () => BetFilter
+
   @column({ isPrimary: true })
   public id: string
 
