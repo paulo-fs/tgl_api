@@ -8,12 +8,14 @@ import UpdateValidator from 'App/Validators/User/UpdateValidator'
 
 export default class UsersController {
   public async index({ request, response }: HttpContextContract) {
-    const { page, perPage, noPaginate } = request.qs()
+    const { page, perPage, noPaginate, ...inputs } = request.qs()
 
-    if (noPaginate) return User.query()
+    if (noPaginate) return User.query().filter(inputs)
 
     try {
-      const users = await User.query().paginate(page || 1, perPage || 10)
+      const users = await User.query()
+        .filter(inputs)
+        .paginate(page || 1, perPage || 10)
       return response.ok(users)
     } catch (error) {
       return response.badRequest({ message: 'Error in list users', originalError: error.message })

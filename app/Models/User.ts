@@ -16,7 +16,13 @@ import {
 import Bet from './Bet'
 import Role from './Role'
 
-export default class User extends BaseModel {
+import { compose } from '@ioc:Adonis/Core/Helpers'
+import { Filterable } from '@ioc:Adonis/Addons/LucidFilter'
+import UserFilter from './Filters/UserFilter'
+
+export default class User extends compose(BaseModel, Filterable) {
+  public static $filter = () => UserFilter
+
   @column({ isPrimary: true })
   public id: string
 
