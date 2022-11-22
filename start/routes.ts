@@ -48,7 +48,7 @@ Route.group(() => {
 // PUBLIC ROUTES
 Route.group(() => {
   // USERS
-  Route.post('users/create', 'UsersController.store')
+  Route.post('users', 'UsersController.store')
   Route.post('login', 'AuthController.login')
   // GAMES
   Route.get('games', 'GamesController.index')
@@ -62,7 +62,7 @@ Route.group(() => {
   Route.get('users/:id', 'UsersController.show')
   Route.put('users/:id', 'UsersController.update')
   // GAMES
-  Route.post('games/create', 'GamesController.store')
+  Route.post('games', 'GamesController.store')
   Route.delete('games/:id', 'GamesController.destroy')
   Route.put('games/:id', 'GamesController.update')
 })
@@ -74,7 +74,7 @@ Route.group(() => {
   // USERS
   Route.delete('users/:id', 'UsersController.destroy')
   // ROLES
-  Route.post('roles/create', 'RolesController.store')
+  Route.post('roles', 'RolesController.store')
   Route.get('roles', 'RolesController.index')
   Route.get('roles/:id', 'RolesController.show')
   Route.put('roles/:id', 'RolesController.update')
@@ -87,7 +87,7 @@ Route.group(() => {
 Route.group(() => {
   Route.get('bets', 'BetsController.index')
   Route.get('bets/:id', 'BetsController.show')
-  Route.post('bets/create', 'BetsController.store')
+  Route.post('bets', 'BetsController.store')
 })
   .prefix('api')
   .middleware(['auth'])
