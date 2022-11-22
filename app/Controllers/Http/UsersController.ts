@@ -64,10 +64,25 @@ export default class UsersController {
 
   public async show({ params, response }: HttpContextContract) {
     const userId = params.id
+    const oneMonthDif = calcOneMonthDif()
+
+    function calcOneMonthDif() {
+      const monthInMiliseconds = 30 * 24 * 60 * 60 * 1000
+      const oneMonthDifInMiliseconds = Date.now() - monthInMiliseconds
+      return new Date(oneMonthDifInMiliseconds)
+    }
 
     try {
       const user = await User.findByOrFail('id', userId)
-      user.load('roles')
+      await user.load('roles', (query) => {
+        query.select('role')
+      })
+      await user.load('bets', (query) => {
+        query
+          .select('id', 'game_id', 'selected_numbers', 'created_at')
+          .where('created_at', '>', oneMonthDif)
+      })
+
       return user
     } catch (error) {
       return response.notFound({ message: 'User not found', originalError: error.message })
