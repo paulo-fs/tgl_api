@@ -53,6 +53,9 @@ Route.group(() => {
   // GAMES
   Route.get('games', 'GamesController.index')
   Route.get('games/:id', 'GamesController.show')
+  // RECOVER PASS
+  Route.post('recoverpass', 'RecoverPasswordController.store')
+  Route.put('recoverpass/:token', 'RecoverPasswordController.update')
 }).prefix('api')
 
 //ADMIN AND EMPLYOYEE ROUTES
