@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 import isLeapYear from 'dayjs/plugin/isLeapYear'
 import 'dayjs/locale/pt-br'
 
-import { sendMail } from 'App/Services/sendMail'
+import { sendInviteMail } from 'App/Services/sendInviteMail'
 import Bet from 'App/Models/Bet'
 import User from 'App/Models/User'
 
@@ -41,7 +41,7 @@ export default class SendEmailToUsersWithoutBetForOneWeek extends BaseTask {
 
           if (dateMoreOneWeek < currentDate) {
             const user = await User.findByOrFail('id', userId)
-            await sendMail(user, 'email/inviteToPlay')
+            await sendInviteMail(user, 'email/inviteToPlay')
             Logger.info(`email enviado para $${user.email}`)
           }
         })
