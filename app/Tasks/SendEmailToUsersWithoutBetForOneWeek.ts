@@ -4,7 +4,9 @@ import dayjs from 'dayjs'
 import isLeapYear from 'dayjs/plugin/isLeapYear'
 import 'dayjs/locale/pt-br'
 
+import { sendMail } from 'App/Services/sendMail'
 import Bet from 'App/Models/Bet'
+import User from 'App/Models/User'
 
 export default class SendEmailToUsersWithoutBetForOneWeek extends BaseTask {
   /**
@@ -14,22 +16,18 @@ export default class SendEmailToUsersWithoutBetForOneWeek extends BaseTask {
       / valores de passo
    */
   public static get schedule() {
-    return '*/10 * * * * *'
+    return '01 00 09 * * *'
   }
-  /**
-   * Set enable use .lock file for block run retry task
-   * Lock file save to `build/tmpTaskLock`
-   */
+
   public static get useLock() {
     return false
   }
 
   public async handle() {
-    // Logger.info('Handled')
     dayjs.extend(isLeapYear)
     dayjs.locale('pt-br')
 
-    Logger.info('5s')
+    Logger.info('rodou a task')
 
     try {
       const bets = await Bet.all()
@@ -39,11 +37,12 @@ export default class SendEmailToUsersWithoutBetForOneWeek extends BaseTask {
         bets.map(async (item) => {
           const { createdAt } = item
           const dateMoreOneWeek = dayjs(String(createdAt)).add(7, 'd').format()
-
-          // Logger.info(`created at >>>> ${dateMoreOneWeek}`)
+          const userId = item.userId
 
           if (dateMoreOneWeek < currentDate) {
-            Logger.info('email enviado')
+            const user = await User.findByOrFail('id', userId)
+            await sendMail(user, 'email/inviteToPlay')
+            Logger.info(`email enviado para $${user.email}`)
           }
         })
       )
