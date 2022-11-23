@@ -6,6 +6,7 @@ import Game from 'App/Models/Game'
 import AppConfiguration from 'App/Models/AppConfiguration'
 
 import Database from '@ioc:Adonis/Lucid/Database'
+import { sendGoodLuckMail } from 'App/Services/sendGoodLuckMail'
 
 export default class BetsController {
   public async index({ auth, response, request }: HttpContextContract) {
@@ -27,12 +28,13 @@ export default class BetsController {
 
   public async store({ auth, request, response }: HttpContextContract) {
     const userId = auth.user?.id
+    let user: User
     let minCartValue: number
     let bodyRequest = request.body()
     let betsReadyToBeSaved: Bet[] = []
 
     try {
-      await User.findByOrFail('id', userId)
+      user = await User.findByOrFail('id', userId)
     } catch (error) {
       return response.notFound({ message: 'User not found', originalError: error.message })
     }
@@ -105,6 +107,8 @@ export default class BetsController {
         },
       }
     })
+
+    await sendGoodLuckMail(user, 'email/goodLuck')
 
     return {
       totalCart: totalCart.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }),
