@@ -46,6 +46,9 @@ const databaseConfig: DatabaseConfig = {
         naturalSort: true,
         disableRollbacksInProduction: true,
       },
+      // seeders: {
+      //   paths: ['./database/seeders/MainSeeder/index.ts'],
+      // },
       healthCheck: false,
       debug: false,
     },
