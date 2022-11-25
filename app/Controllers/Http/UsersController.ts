@@ -104,9 +104,15 @@ export default class UsersController {
     await request.validate(UpdateValidator)
     const userId = params.id
     const bodyRequest = request.only(['name', 'email', 'password'])
+    let user: User
 
     try {
-      const user = await User.findByOrFail('id', userId)
+      user = await User.findByOrFail('id', userId)
+    } catch (error) {
+      return response.notFound({ message: 'User not found', originalError: error.message })
+    }
+
+    try {
       await user.merge(bodyRequest).save()
       return user
     } catch (error) {
