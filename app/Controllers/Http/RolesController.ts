@@ -3,6 +3,8 @@ import Database from '@ioc:Adonis/Lucid/Database'
 
 import Role from 'App/Models/Role'
 import User from 'App/Models/User'
+import StoreValidator from 'App/Validators/Roles/StoreValidator'
+import UpdateValidator from 'App/Validators/Roles/UpdateValidator'
 
 export default class RolesController {
   public async index({ response }: HttpContextContract) {
@@ -15,6 +17,8 @@ export default class RolesController {
   }
 
   public async store({ request, response }: HttpContextContract) {
+    await request.validate(StoreValidator)
+
     const bodyRequest = request.only(['role'])
 
     const trx = await Database.transaction()
@@ -49,6 +53,8 @@ export default class RolesController {
   }
 
   public async update({ params, request, response }: HttpContextContract) {
+    await request.validate(UpdateValidator)
+
     const roleId = params.id
     const updatedRole = request.only(['role'])
     const userId = request.only(['user_id'])['user_id']
@@ -125,7 +131,7 @@ export default class RolesController {
       await role.delete()
       response.ok({ message: 'Role deleted successfully' })
     } catch (error) {
-      return response.notFound({ messsage: 'Role not found', originalError: error.message })
+      return response.notFound({ message: 'Role not found', originalError: error.message })
     }
   }
 }
