@@ -11,7 +11,7 @@ export default class AuthController {
     try {
       user = await User.query().where('email', email).preload('roles').firstOrFail()
     } catch (error) {
-      return response.notFound({ message: 'User not found', originalError: error.message })
+      return response.unauthorized({ message: 'Email or password invalid' })
     }
 
     try {
@@ -21,7 +21,7 @@ export default class AuthController {
       })
       return { token, user }
     } catch (error) {
-      return response.unauthorized({ message: 'Invalid credentials' })
+      return response.unauthorized({ message: 'Email or password invalid' })
     }
   }
 }
