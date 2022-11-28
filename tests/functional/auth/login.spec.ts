@@ -2,7 +2,7 @@ import Database from '@ioc:Adonis/Lucid/Database'
 import { test } from '@japa/runner'
 
 test.group('Auth login', (group) => {
-  group.tap((test) => test.tags(['@user_show']))
+  group.tap((test) => test.tags(['@user_login']))
   const resource = 'api/login'
 
   group.each.setup(async () => {
