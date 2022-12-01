@@ -36,6 +36,7 @@ export default class UsersController {
       user.email = bodyUser.email
       user.password = bodyUser.password
     } catch (error) {
+      console.log(error)
       trx.rollback()
       return response.badRequest({ message: 'Error in create user', originalError: error.message })
     }
